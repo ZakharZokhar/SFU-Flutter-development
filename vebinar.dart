@@ -1,188 +1,176 @@
-import 'dart:math';
+// Класс Triangle для создания треугольника
+class Triangle {
+  
+  final int a;
+  final int b;
+  final int c;
 
-void main() {
-  
-  // Record 
-  (String, String, {int a, bool b}) c = ('first', a: 2, b: true, 'second');
-  
-//   print(c.a);
-//   print(c.b);
-//   print(c.$1);
-  
-  ({List<int>? data, String? error}) response = (data: null, error: 'Error status code 400');
-  
-  
-  final abc = ABC();
-  
-  abc.sum(a: 1, b: 2);
-  
-  final co = Const(a: 13);
- 
-}
+  Triangle({required this.a, required this.b, required this.c});
 
-// Задание 1: Найти длину строки, а если она равна null, то вернуть null
-int? stringLength(String? s) {
-  if (s != null) {
-    return s.length;
+  // Фабричный конструктор для создания Triangle на основе сторон s и p
+  factory Triangle.fromSp(int s, int p) {
+    return Triangle(a: s - p, b: s + p, c: s);
   }
-  
-  return null;
-}
 
-int? stringLength2(String? s) {
-  try {
-    return s!.length;
-  } catch (e) {
-    return null;
-  }
-}
-
-int? stringLength3(String? s) {
-  return s != null ? s.length : null;
-}
-
-int? stringLength4(String? s) {
-  return s?.length;
-}
-
-// Задание 2: Убрать все null из массива
-List<int> noNulls(List<int?> withNulls) {
-  List<int> noNulls = [];
-  for (int? element in withNulls) {
-    if (element != null) {
-      noNulls.add(element);
-    }
-  }
-  
-  return noNulls;
-}
-
-List<int> noNulls2(List<int?> withNulls) {
-  return withNulls.where((element) => element != null).map((e) => e ?? 0).toList();
-}
-
-List<int> noNulls3(List<int?> withNulls) {
-  return withNulls.whereType<int>().toList();
-}
-
-// Задание 3: 
-abstract class Store {
-  int? storedNullableValue;
-  
-  void updateStoredValue() {
-    
-    storedNullableValue ??= calculateStoredValue() ?? 0;
-    // если storedNullableValue != null, то storedNullableValue
-    // если storedNullableValue == null, то calculateStoredValue
-    // если calculateStoredValue == null, то 0
-  }
-  
-  int? calculateStoredValue();
-}
-
-class ExampleStore extends Store {
-  
   @override
-  int? calculateStoredValue() {
-    int a = Random().nextInt(100) + 1;
-    
-    if (a > 50) {
-      return a;
-    }
-    return null;
+  String toString() => 'Triangle(a: $a, b: $b, c: $c)';
+}
+
+// Класс A с переопределением оператора == и hashCode
+class A {
+  final int a;
+
+  A({required this.a});
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is A && other.a == a;
+  }
+
+  @override
+  int get hashCode => a.hashCode;
+}
+
+// Абстрактный класс Animal с обязательным параметром weight
+abstract class Animal {
+  int? weight;
+
+  Animal({required this.weight});
+}
+
+// Подклассы Bird и Fish, которые наследуют от Animal
+class Bird extends Animal {
+  Bird({required super.weight});
+
+  void fly() {
+    print('Flying');
   }
 }
 
+class Fish extends Animal {
+  Fish({required super.weight});
 
-// Задание 4:
-class Meal {
-  late String _description;
-  
-  set description(String desc) {
-    _description = 'Meal description: ${desc}';
-  }
-  
-  String get description => _description;
-}
-
-
-class Animal {
-  void eat() {
-    print('Eating...');
+  void swim() {
+    print('Swimming!');
   }
 }
 
-mixin class Programmer {
-  void program() {
-    print('Programming...');
+// Создадим два миксина для различных типов поведения
+mixin FlyingAnimal {
+  void fly() => print('Flying with wings');
+}
+
+mixin SwimmingAnimal {
+  void swim() => print('Swimming in water');
+}
+
+// Класс Duck, который использует оба миксина
+class Duck extends Animal with FlyingAnimal, SwimmingAnimal {
+  Duck({required super.weight});
+}
+
+// Интерфейс данных
+abstract class IDataSource {
+  int getIntData();
+  String getStringData();
+}
+
+// Реализация IDataSource для веба
+class DataSourceWeb implements IDataSource {
+  @override
+  int getIntData() => 1;
+
+  @override
+  String getStringData() => "1";
+}
+
+// Класс для обработки данных
+class DataHandler {
+  final IDataSource dataSource;
+
+  DataHandler({required this.dataSource});
+
+  void printIntData() {
+    print(dataSource.getIntData());
+  }
+
+  void printStringData() {
+    print(dataSource.getStringData());
   }
 }
 
-mixin Student {
-  void learn() {
-    print('Learning...');
+// Пример использования DataHandler с IDataSource
+void main() async {
+  final dataHandler = DataHandler(dataSource: DataSourceWeb());
+  dataHandler
+    ..printIntData()
+    ..printStringData();
+
+  // Пример с созданием объекта Duck
+  final duck = Duck(weight: 5);
+  duck.fly();
+  duck.swim();
+
+  // Пример использования enum
+  final color = Color.red;
+  switch (color) {
+    case Color.red:
+      print("#FF0000");
+      break;
+    case Color.green:
+      print("#00FF00");
+      break;
+    case Color.blue:
+      print("#0000FF");
+      break;
   }
+  print(color.hex);
+
+  // Пример расширения для строки
+  final parsedInt = '123'.toInt();
+  print(parsedInt);
+
+  // Пример с Future как Promise
+  task().then((value) {
+    print(value);
+  });
+
+  // Пример ожидания результата Future
+  final data = await task();
+  print(data);
 }
 
-class Human extends Animal with Programmer, Student {
+// Создадим супер-енум с hex-представлением цвета
+enum Color {
+  red("#FF0000"),
+  green("#00FF00"),
+  blue("#0000FF");
+
+  final String hex;
+
+  const Color(this.hex);
 }
 
-base class A {
-  void test() {
-    print('test');
-  }
+// Расширение для строки, позволяющее преобразовать ее в int
+extension StringX on String {
+  int toInt() => int.parse(this);
 }
 
-interface class B {
-  
+// Пример функции с Future
+Future<String> task() async {
+  await Future.delayed(Duration(seconds: 2));
+  return 'Data';
 }
 
-final class C {
-  
+// Пример функции с передачей другого метода в качестве аргумента
+void callExternalFunction(void Function() f) {
+  f();
 }
 
-sealed class Vehicle {
-  
-}
+// Пример функции с параметрами и типами для внешних функций
+typedef ExternalFunction = void Function(String s);
 
-class Truck extends Vehicle {
-  
-}
-
-class Car extends Vehicle {
-  
-}
-
-class Bike extends Vehicle {
-  
-}
-
-String getSound(Vehicle vehicle) {
-  return switch(vehicle) {
-      Truck() => 'truck',
-      Car() => 'car',
-      Bike() => 'bike',
-  };
-}
-
-
-class ABC {
-  
-  void sum({required int a, required int b}) {
-    print(a  + b);
-  }
-}
-
-class Const {
-  
-  int a;
-  
-  Const({required this.a});
-  
-}
-
-class Const2 extends Const {
-  int b;
-  
-  Const2({required this.b, required super.a});
+void callExternalFunctionWithParam({ExternalFunction? f}) {
+  f?.call('hello');
 }
