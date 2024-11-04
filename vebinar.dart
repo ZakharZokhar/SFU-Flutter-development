@@ -1,5 +1,6 @@
 // Класс Triangle для создания треугольника
 class Triangle {
+  
   final int a;
   final int b;
   final int c;
