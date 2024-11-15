@@ -1,168 +1,330 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:html';
-import 'dart:math';
-import 'dart:async';
+void main() {
+  task15();
+}
 
-void main() async {
+// Задание 1
+void task1() {
+  final a = 1;
+
+  final b = 2;
+
+  print("$a + $b = ${a + b}");
+}
+
+// Задание 2
+void task2() {
+  final a = [1, 2, 3, -100, 1000];
+
+  int min = a[0];
+
+  for (int num in a) {
+    if (num < min) {
+      min = num;
+    }
+  }
+
+  print(min);
+}
+
 // Задание 3
+void task3() {
+  final numbers = [1, 5, 3, 99, 12, 44];
 
-//  final url = 'https://echo.websocket.org/';
+  List<int> evenNumbers = [];
+  List<int> oddNumbers = [];
 
-//   final socket = WebSocket(url);
-
-//   socket.onOpen.listen((_) {
-//     print('Connected to WebSocket');
-//     socket.send(jsonEncode({'message': 'hello'}));
-//   });
-
-//   socket.onMessage.listen((MessageEvent event) {
-//     print('Received message: ${event.data}');
-//   });
-
-//   socket.onClose.listen((_) {
-//     print('Connection closed');
-//   });
-
-//   socket.onError.listen((_) {
-//     print('Error occured');
-//   });
-
-  // Stream.periodic
-//   final random = Random();
-//   final randomNumbers = Stream.periodic(const Duration(seconds: 2), (_) {
-//     print('Сгенерировал');
-//     return random.nextInt(100) + 1;
-//   });
-
-//   final subscription = randomNumbers.listen((value) {
-//     print('Случайное значение: ${value}');
-//   });
-
-//   await Future.delayed(const Duration(seconds: 10), () {
-//     subscription.cancel();
-//     print('Отписались!');
-//   });
-
-  //  Stream yeild
-//   final subscription = generateRandomNumbers().listen((value) {
-//     print('Случайное значение: $value');
-//   });
-
-//   await Future.delayed(const Duration(seconds: 10), () {
-//     subscription.cancel();
-//     print('Отписались!');
-//   });
-
-  // StreamContoller
-
-//   final random = Random();
-//   final controller = StreamController();
-
-//   final subscription = controller.stream.listen((value) {
-//     print('Случайное значение: $value');
-//   });
-
-//   void generateRandomNumber() {
-//     if (!controller.isClosed) {
-//       print('Сгенерировано!');
-//       controller.sink.add(random.nextInt(100) + 1);
-//       Future.delayed(Duration(seconds: 2), generateRandomNumber);
-//     }
-//   }
-
-//   generateRandomNumber();
-
-//   await Future.delayed(const Duration(seconds: 10), () {
-//     subscription.cancel();
-//     controller.close();
-//     print('Отписались!');
-//   });
-
-  final stockStream = generateStockPrice();
-
-  final subscription = stockStream.listen((value) {
-    print('Текущая цена: $value');
-
-    if (value > 110) {
-      print('Цена достигла 110!');
+  for (int num in numbers) {
+    if (num % 2 == 0) {
+      evenNumbers.add(num);
+    } else {
+      oddNumbers.add(num);
     }
-  });
+  }
+
+  print('четные числа - $evenNumbers');
+  print('нечетные числа - $oddNumbers');
 }
 
-// Задание 1: получить данные с https://jsonplaceholder.typicode.com/posts/1
-Future<void> fetchData() async {
-  final uri = Uri.parse('https://dummyjson.com/test');
+// Задание 4
+void task4() {
+  String? a = 'Hello world';
+  String? b;
 
-  return http.get(uri).then((response) {
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      print('Status: ${data['status']}');
-    } else {
-      print('Error with status code: ${response.statusCode}');
-    }
-  }).catchError((e) {
-    print(e);
-  });
+  String checkNull(String? str) {
+    return str ?? 'Переменная равна null';
+  }
+
+  print(checkNull(a));
+  print(checkNull(b));
 }
 
-Future<void> fetchData2() async {
-  final uri = Uri.parse('https://dummyjson.com/test');
+// Задание 5
+void task5() {
+  String? a = 'Hello world';
+  String? b;
 
-  try {
-    final response = await http.get(uri);
+  int getStrLength(String? str) {
+    return str?.length ?? 0;
+  }
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      print('Status: ${data['status']}');
-    } else {
-      print('Error with status code: ${response.statusCode}');
-    }
-  } catch (e) {
-    print(e);
+  print('Длина строки ${getStrLength(a)}');
+  print('Длина строки ${getStrLength(b)}');
+}
+
+// Задание 6
+void task6() {
+  late String a;
+
+  a = 'Hello world';
+
+  print(a);
+}
+
+// Задания 7-11
+// Задание 7
+enum Gender {
+  male('Мужской'),
+  female('Женский');
+
+  final String name;
+
+  const Gender(this.name);
+}
+
+class Person {
+  String name;
+  int age;
+  Gender gender;
+
+  Person(this.name, this.age, this.gender);
+
+  void showInfo() {
+    print('$name, $age, ${gender.name}');
   }
 }
 
-// Задание 2: использовать Future.wait для нескольких Future
-Future<String> task1() async {
-  await Future.delayed(Duration(seconds: 3));
+void task7() {
+  final a = Person('Первое имя', 18, Gender.male);
+  final b = Person('Второе имя', 18, Gender.female);
+  final c = Person('Третье имя', 18, Gender.male);
 
-  return '1';
+  a.showInfo();
+  b.showInfo();
+  c.showInfo();
 }
 
-Future<String> task2() async {
-  await Future.delayed(Duration(seconds: 3));
+// Задание 8
+class Person2 {
+  String? _name;
+  int? _age;
+  Gender? _gender;
 
-  return '2';
-}
+  String get name => _name ?? 'Неизвестно';
+  int get age => _age ?? 0;
+  Gender? get gender => _gender;
 
-Future<String> task3() async {
-  await Future.delayed(Duration(seconds: 3));
+  set name(String value) => _name = value;
+  set age(int value) => _age = value;
+  set gender(Gender? value) => _gender = value;
 
-  return '3';
-}
-
-// Задание 3: подключиться к веб-сокету ws.ifelse.io
-
-// Задание 4: Создать стрим, отслеживающий изменение переменной, которая каждый раз считается как random.nextDouble() * 10 - 5 и уведомить пользователя по достижении определенного значения.
-
-Stream<double> generateStockPrice() async* {
-  final random = Random();
-  double currentPrice = 100;
-
-  while (true) {
-    await Future.delayed(const Duration(seconds: 2));
-    currentPrice += random.nextDouble() * 10 - 2;
-    yield currentPrice;
+  void showInfo() {
+    print('$name, $age, ${gender?.name}');
   }
 }
 
-Stream<int> generateRandomNumbers() async* {
-  final random = Random();
+void task8() {
+  final a = Person2();
+  final b = Person2();
+  final c = Person2();
 
-  while (true) {
+  a.name = 'Первое имя';
+  a.age = 18;
+  a.gender = Gender.male;
+
+  b.name = 'Второе имя';
+  b.age = 18;
+  b.gender = Gender.female;
+
+  c.name = 'Третье имя';
+  c.age = 18;
+  c.gender = Gender.male;
+
+  a.showInfo();
+  b.showInfo();
+  c.showInfo();
+}
+
+// Задание 9
+class StudentsGroup {
+  String name;
+  int year;
+
+  StudentsGroup(this.name, this.year);
+
+  void showInfo() {
+    print('группа $name, год набора $year');
+  }
+}
+
+void task9() {
+  final a = StudentsGroup('АА-00', 2022);
+  final b = StudentsGroup('АА-01', 2020);
+
+  a.showInfo();
+  b.showInfo();
+}
+
+// Задание 10
+class Student extends Person {
+  StudentsGroup group;
+
+  Student(super.name, super.age, super.gender, this.group);
+
+  void showInfo() {
+    print('Студент $name учится в группе ${group.name}');
+  }
+}
+
+void task10() {
+  final aa = StudentsGroup('АА-00', 2022);
+  final bb = StudentsGroup('АА-01', 2020);
+
+  final a = Student('Иванов Иван', 18, Gender.male, aa);
+  final b = Student('Иванов Ивана', 19, Gender.female, aa);
+  final c = Student('Иванов Ивана', 20, Gender.female, bb);
+  final d = Student('Иванов Иван', 21, Gender.male, bb);
+  final e = Student('Петров Иван', 18, Gender.male, bb);
+
+  a.showInfo();
+  b.showInfo();
+  c.showInfo();
+  d.showInfo();
+  e.showInfo();
+}
+
+// Задание 11
+class Teacher extends Person {
+  String subject;
+  List<StudentsGroup> groups;
+
+  Teacher(super.name, super.age, super.gender, this.subject, this.groups);
+
+  String getGroupsName() {
+    List<String> names = [];
+
+    for (StudentsGroup group in groups) {
+      names.add(group.name);
+    }
+
+    return names.join('\n');
+  }
+
+  void showInfo() {
+    print('Преподаватель $name ведет предмет $subject у групп:\n${getGroupsName()}');
+  }
+}
+
+void task11() {
+  final aa = StudentsGroup('АА-00', 2022);
+  final bb = StudentsGroup('АА-01', 2020);
+  final cc = StudentsGroup('АА-02', 2024);
+
+  final a = Teacher('Иванов Иван', 89, Gender.male, 'Программирование на Flutter', [aa, bb]);
+  final b = Teacher('Иванов Ивана', 42, Gender.female, 'Физика', [aa, bb, cc]);
+  final c = Teacher('Сергей Сидоров', 44, Gender.female, 'Английский', [aa]);
+
+  a.showInfo();
+  b.showInfo();
+  c.showInfo();
+}
+
+// Задание 12
+abstract class Animal {
+  void makeSound();
+}
+
+class Dog implements Animal {
+  void makeSound() {
+    print('Bark!!');
+  }
+}
+
+class Cat implements Animal {
+  void makeSound() {
+    print('Meow!!');
+  }
+}
+
+class Frog implements Animal {
+  void makeSound() {
+    print('Quack!!');
+  }
+}
+
+void task12() {
+  final animals = [Dog(), Cat(), Frog()];
+
+  for (Animal animal in animals) {
+    print(animal.runtimeType);
+  }
+}
+
+// Задание 13
+mixin Swimming {}
+
+mixin Flying {}
+
+class Fish with Swimming implements Animal {
+  void makeSound() {
+    print('Bark!!');
+  }
+}
+
+class Duck with Swimming, Flying implements Animal {
+  void makeSound() {
+    print('Meow!!');
+  }
+}
+
+class Dove with Flying implements Animal {
+  void makeSound() {
+    print('Quack!!');
+  }
+}
+
+void task13() {
+  final animals = [Fish(), Duck(), Dove()];
+
+  for (var animal in animals) {
+    print(
+        '${animal.runtimeType} - ${animal is Flying ? '' : 'не '}умеет летать, ${animal is Swimming ? '' : 'не '}умеет плавать');
+  }
+}
+
+// Задание 14
+extension StringX on String {
+  num? parseNum() {
+    return num.tryParse(this);
+  }
+}
+
+void task14() {
+  final a = ['42', '7', '8.08', '', 'String'];
+
+  for (String str in a) {
+    print(str.parseNum());
+  }
+}
+
+// Задание 15
+void task15() {
+  Future<String> getString() async {
+    print('Начали ожидание');
     await Future.delayed(Duration(seconds: 2));
-    print('Сгенерировал');
-    yield random.nextInt(100) + 1;
+    return 'Hello world';
   }
+
+  getString().then((value) {
+    print(value);
+  });
 }
