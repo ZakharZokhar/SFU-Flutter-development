@@ -1,43 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:test_project/common/colors.dart';
+import 'package:test_project/common/styles.dart';
 
 class CurrentWeatherCard extends StatelessWidget {
-  const CurrentWeatherCard({super.key});
+  const CurrentWeatherCard({
+    super.key,
+    required this.time,
+    required this.image,
+    required this.cecl,
+  });
+
+  final String time;
+  final String image;
+  final String cecl;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 58,
-      decoration: BoxDecoration(
-        color: Color(0xFFAEADF5),
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 18,
-            decoration: BoxDecoration(
-              color: Colors.black,
-            ),
+    return Column(
+      children: [
+        Text(
+          time,
+          style: body.copyWith(
+            color: primaryText,
           ),
-          SizedBox(
-            height: 20,
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Image.asset(
+          height: 30,
+          width: 40,
+          image,
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Text(
+          cecl,
+          style: bodyMedium.copyWith(
+            color: primaryText,
           ),
-          Container(
-            height: 30,
-            decoration: BoxDecoration(
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          Container(
-            height: 21,
-            decoration: BoxDecoration(
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }
