@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:test_project/common/colors.dart';
 import 'package:test_project/common/decoration.dart';
@@ -8,6 +9,7 @@ import 'package:test_project/pages/weather_page/widgets/day_weather.dart';
 import 'package:test_project/pages/weather_page/widgets/icon_with_text.dart';
 import 'package:test_project/pages/weather_page/widgets/property_card.dart';
 
+@RoutePage()
 class WeatherPage extends StatelessWidget {
   const WeatherPage({super.key});
 

@@ -1,9 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:test_project/common/colors.dart';
 import 'package:test_project/common/styles.dart';
 import 'package:test_project/common/widgets/my_app_bar.dart';
 import 'package:test_project/pages/weather_page/weather_page.dart';
+import 'package:test_project/router.gr.dart';
 
+@RoutePage()
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
@@ -160,10 +163,8 @@ class _AuthPageState extends State<AuthPage> {
   void _login() {
     if (_selectedIndex == 0) {
       if (_usernameController.text == 'user' && _passwordController.text == '123456') {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => WeatherPage(),
-          ),
+        context.router.replace(
+          WeatherRoute(),
         );
       } else {
         ScaffoldMessenger.of(context)
@@ -181,10 +182,8 @@ class _AuthPageState extends State<AuthPage> {
       }
     } else {
       if (_phoneController.text == '79999999999' && _passwordController.text == '123456') {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => WeatherPage(),
-          ),
+        context.router.replace(
+          WeatherRoute(),
         );
       } else {
         ScaffoldMessenger.of(context)
