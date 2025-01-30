@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_project/common/colors.dart';
+import 'package:test_project/view/common/colors.dart';
 
 const cardDecoration = BoxDecoration(
   color: cardColor,

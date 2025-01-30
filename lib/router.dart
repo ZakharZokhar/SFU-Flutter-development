@@ -9,7 +9,7 @@ class AppRouter extends RootStackRouter {
 
  @override
  List<AutoRoute> get routes => [
-   AutoRoute(page: AuthRoute.page, path: '/'),
-   AutoRoute(page: WeatherRoute.page),
+   AutoRoute(page: AuthRoute.page),
+   AutoRoute(page: WeatherRoute.page, path: '/'),
  ];
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_project/common/colors.dart';
-import 'package:test_project/common/styles.dart';
+import 'package:test_project/view/common/colors.dart';
+import 'package:test_project/view/common/styles.dart';
 
 class CurrentWeatherCard extends StatelessWidget {
   const CurrentWeatherCard({

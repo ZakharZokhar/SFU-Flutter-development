@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_project/common/colors.dart';
-import 'package:test_project/common/decoration.dart';
-import 'package:test_project/common/styles.dart';
-import 'package:test_project/pages/weather_page/widgets/icon_with_text.dart';
+import 'package:test_project/view/common/colors.dart';
+import 'package:test_project/view/common/decoration.dart';
+import 'package:test_project/view/common/styles.dart';
+import 'package:test_project/view/pages/weather_page/widgets/icon_with_text.dart';
 
 class PropertyCard extends StatelessWidget {
   const PropertyCard({
