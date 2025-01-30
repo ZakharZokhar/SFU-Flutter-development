@@ -1,13 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:test_project/common/colors.dart';
-import 'package:test_project/common/decoration.dart';
-import 'package:test_project/common/styles.dart';
-import 'package:test_project/common/widgets/my_app_bar.dart';
-import 'package:test_project/pages/weather_page/widgets/current_weather_card.dart';
-import 'package:test_project/pages/weather_page/widgets/day_weather.dart';
-import 'package:test_project/pages/weather_page/widgets/icon_with_text.dart';
-import 'package:test_project/pages/weather_page/widgets/property_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:test_project/bloc/blocs/weather_bloc.dart';
+import 'package:test_project/infrastructure/weather_repository.dart';
+import 'package:test_project/view/common/colors.dart';
+import 'package:test_project/view/common/decoration.dart';
+import 'package:test_project/view/common/styles.dart';
+import 'package:test_project/view/common/widgets/my_app_bar.dart';
+import 'package:test_project/view/pages/weather_page/widgets/current_weather_card.dart';
+import 'package:test_project/view/pages/weather_page/widgets/day_weather.dart';
+import 'package:test_project/view/pages/weather_page/widgets/icon_with_text.dart';
+import 'package:test_project/view/pages/weather_page/widgets/property_card.dart';
 
 @RoutePage()
 class WeatherPage extends StatelessWidget {
@@ -249,51 +253,79 @@ class WeatherPage extends StatelessWidget {
                       height: 10,
                     ),
                     Container(
-                      color: primary.withOpacity(0.35),
+                      color: primary.withValues(alpha: 0.35),
                       child: Column(
                         children: [
                           Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 16,
                             ),
-                            child: Container(
-                              decoration: cardDecoration,
-                              padding: EdgeInsets.symmetric(
-                                vertical: 16,
-                                horizontal: 12,
-                              ),
-                              child: Column(
-                                children: [
-                                  IconWithText(
-                                    icon: Icons.calendar_month,
-                                    text: 'Прогноз на 10 дней',
-                                  ),
-                                  DayWeather(
-                                    date: '27 нояб. Сегодня',
-                                    image: 'images/sun_future.png',
-                                    celc: '-6°\\-10°',
-                                  ),
-                                  DayWeather(
-                                    date: '28 нояб. ЧТ',
-                                    image: 'images/sun_cloud_future.png',
-                                    celc: '-1°\\-5°',
-                                  ),
-                                  DayWeather(
-                                    date: '28 нояб. ЧТ',
-                                    image: 'images/sun_future.png',
-                                    celc: '-6°\\-10°',
-                                  ),
-                                  DayWeather(
-                                    date: '28 нояб. ЧТ',
-                                    image: 'images/snow_future.png',
-                                    celc: '-6°\\-10°',
-                                  ),
-                                  DayWeather(
-                                    date: '28 нояб. ЧТ',
-                                    image: 'images/sun_future.png',
-                                    celc: '-6°\\-10°',
-                                  ),
-                                ],
+                            child: BlocProvider(
+                              create: (context) => WeatherBloc(
+                                WeatherRepository(),
+                              )..add(WeatherEvent.load()),
+                              child: BlocBuilder<WeatherBloc, WeatherState>(
+                                builder: (context, state) {
+                                  return state.map(
+                                    loading: (_) => Shimmer.fromColors(
+                                      baseColor: primary,
+                                      highlightColor: white,
+                                      child: Container(
+                                        decoration: cardDecoration,
+                                        height: 400,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 16,
+                                          horizontal: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    success: (value) => Container(
+                                      decoration: cardDecoration,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 16,
+                                        horizontal: 12,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          IconWithText(
+                                            icon: Icons.calendar_month,
+                                            text: 'Прогноз на 10 дней',
+                                          ),
+                                          ...value.data.map(
+                                            (day) => DayWeather(
+                                              date: day.date,
+                                              image: day.image,
+                                              celc: day.celc,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    error: (value) => Container(
+                                      decoration: cardDecoration,
+                                      height: 400,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 16,
+                                        horizontal: 12,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            value.errorMessage,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () => context.read<WeatherBloc>().add(
+                                                  WeatherEvent.retry(),
+                                                ),
+                                            child: Text(
+                                              'Поробовать снова',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),

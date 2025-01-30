@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:test_project/common/colors.dart';
-import 'package:test_project/common/styles.dart';
-import 'package:test_project/common/widgets/my_app_bar.dart';
-import 'package:test_project/pages/weather_page/weather_page.dart';
+import 'package:test_project/view/common/colors.dart';
+import 'package:test_project/view/common/styles.dart';
+import 'package:test_project/view/common/widgets/my_app_bar.dart';
+import 'package:test_project/view/pages/weather_page/weather_page.dart';
 import 'package:test_project/router.gr.dart';
 
 @RoutePage()
