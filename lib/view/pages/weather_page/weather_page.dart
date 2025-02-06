@@ -8,6 +8,7 @@ import 'package:test_project/view/common/colors.dart';
 import 'package:test_project/view/common/decoration.dart';
 import 'package:test_project/view/common/styles.dart';
 import 'package:test_project/view/common/widgets/my_app_bar.dart';
+import 'package:test_project/view/injection.dart';
 import 'package:test_project/view/pages/weather_page/widgets/current_weather_card.dart';
 import 'package:test_project/view/pages/weather_page/widgets/day_weather.dart';
 import 'package:test_project/view/pages/weather_page/widgets/icon_with_text.dart';
@@ -261,9 +262,7 @@ class WeatherPage extends StatelessWidget {
                               horizontal: 16,
                             ),
                             child: BlocProvider(
-                              create: (context) => WeatherBloc(
-                                WeatherRepository(),
-                              )..add(WeatherEvent.load()),
+                              create: (context) => getIt.get<WeatherBloc>()..add(WeatherEvent.load()),
                               child: BlocBuilder<WeatherBloc, WeatherState>(
                                 builder: (context, state) {
                                   return state.map(

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:test_project/bloc/models/day_weather_data.dart';
 import 'package:test_project/infrastructure/weather_repository.dart';
 
@@ -7,6 +8,7 @@ part 'weather_state.dart';
 part 'weather_event.dart';
 part 'weather_bloc.freezed.dart';
 
+@injectable
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final WeatherRepository _repository;
 
@@ -26,7 +28,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       emit(
         WeatherState.success(data: data),
       );
-    } catch (_) {
+    } catch (e) {
       emit(
         WeatherState.error(
           errorMessage: "Произошла ошибка, попробуйте позже",
