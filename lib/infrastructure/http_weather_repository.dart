@@ -1,19 +1,19 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:http/http.dart' as http;
 
-import 'package:injectable/injectable.dart';
-import 'package:test_project/bloc/models/day_weather_data.dart';
+import 'package:test_project/domain/i_weather_repository.dart';
+import 'package:test_project/domain/models/day_weather_data.dart';
 import 'package:test_project/infrastructure/dtos/day_weather_data_dto.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
-@singleton
-class WeatherRepository {
+class HttpWeatherRepository implements IWeatherRepository {
   bool needError = true;
 
+  @override
   Future<List<DayWeatherData>> getWeather() async {
-    final jsonString = await rootBundle.loadString('lib/infrastructure/weather.json');
+    final url = Uri.https('zakharzokhar-test-docker.hf.space', '/weather');
+    final response = await http.get(url);
 
-    final List<dynamic> jsonList = jsonDecode(jsonString);
+    final List<dynamic> jsonList = jsonDecode(utf8.decode(response.bodyBytes));
 
     final List<Map<String, dynamic>> parsedList =
         jsonList.map((e) => e as Map<String, dynamic>).toList();

@@ -12,7 +12,9 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:test_project/bloc/blocs/weather_bloc.dart' as _i598;
-import 'package:test_project/infrastructure/weather_repository.dart' as _i371;
+import 'package:test_project/domain/i_weather_repository.dart' as _i414;
+import 'package:test_project/infrastructure/retrofit_weather_repository.dart'
+    as _i493;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -25,9 +27,10 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.singleton<_i371.WeatherRepository>(() => _i371.WeatherRepository());
+    gh.factory<_i414.IWeatherRepository>(
+        () => _i493.RetrofitWeatherRepository());
     gh.factory<_i598.WeatherBloc>(
-        () => _i598.WeatherBloc(gh<_i371.WeatherRepository>()));
+        () => _i598.WeatherBloc(gh<_i414.IWeatherRepository>()));
     return this;
   }
 }

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:test_project/bloc/models/day_weather_data.dart';
+import 'package:test_project/domain/models/day_weather_data.dart';
 import 'package:test_project/infrastructure/dtos/weather_celc_dto.dart';
 
 part 'day_weather_data_dto.freezed.dart';
