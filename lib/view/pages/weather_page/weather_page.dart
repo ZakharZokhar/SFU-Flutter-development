@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:test_project/bloc/blocs/weather_bloc.dart';
-import 'package:test_project/infrastructure/weather_repository.dart';
+import 'package:test_project/infrastructure/http_weather_repository.dart';
 import 'package:test_project/view/common/colors.dart';
 import 'package:test_project/view/common/decoration.dart';
 import 'package:test_project/view/common/styles.dart';
