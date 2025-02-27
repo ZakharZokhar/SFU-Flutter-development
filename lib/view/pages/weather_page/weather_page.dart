@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:test_project/bloc/blocs/weather_bloc.dart';
+import 'package:test_project/bloc/blocs/weather_bloc/weather_bloc.dart';
 import 'package:test_project/infrastructure/http_weather_repository.dart';
 import 'package:test_project/view/common/colors.dart';
 import 'package:test_project/view/common/decoration.dart';
@@ -262,7 +262,8 @@ class WeatherPage extends StatelessWidget {
                               horizontal: 16,
                             ),
                             child: BlocProvider(
-                              create: (context) => getIt.get<WeatherBloc>()..add(WeatherEvent.load()),
+                              create: (context) =>
+                                  getIt.get<WeatherBloc>()..add(WeatherEvent.load()),
                               child: BlocBuilder<WeatherBloc, WeatherState>(
                                 builder: (context, state) {
                                   return state.map(

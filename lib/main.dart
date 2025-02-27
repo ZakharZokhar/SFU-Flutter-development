@@ -5,7 +5,7 @@ import 'package:test_project/view/pages/weather_page/weather_page.dart';
 import 'package:test_project/router.dart';
 
 void main() {
-  configureDependencies();  
+  configureDependencies();
   runApp(MyApp());
 }
 
