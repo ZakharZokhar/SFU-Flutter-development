@@ -1,0 +1,1 @@
+См. sign_in_bloc и auth_page
