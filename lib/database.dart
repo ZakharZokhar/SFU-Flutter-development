@@ -21,8 +21,11 @@ class AppDatabase extends _$AppDatabase {
 
   Future<List<DayItem>> getAllDay() => select(dayItems).get();
 
-  Future<int> addDay(DayItemsCompanion day) {
-    return into(dayItems).insert(day);
+  Future<void> addDays(List<DayItemsCompanion> days) async {
+    delete(dayItems).go();
+    for (DayItemsCompanion i in days) {
+      await into(dayItems).insert(i);
+    }
   }
 
   Future deleteDays() {

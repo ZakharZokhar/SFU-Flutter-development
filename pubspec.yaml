@@ -50,6 +50,8 @@ dependencies:
   flutter_secure_storage: 9.2.4 
   drift: ^2.25.1
   drift_flutter: ^0.2.4
+  shared_preferences: 2.5.2
+  sqlite3_flutter_libs: 0.5.31
 
 dev_dependencies:
   flutter_test:

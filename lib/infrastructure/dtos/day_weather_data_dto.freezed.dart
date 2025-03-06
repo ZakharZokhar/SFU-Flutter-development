@@ -14,11 +14,18 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+DayWeatherDataDto _$DayWeatherDataDtoFromJson(Map<String, dynamic> json) {
+  return _DayWeatherDataDto.fromJson(json);
+}
+
 /// @nodoc
 mixin _$DayWeatherDataDto {
   String get date => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   WeatherCelcDto get celc => throw _privateConstructorUsedError;
+
+  /// Serializes this DayWeatherDataDto to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of DayWeatherDataDto
   /// with the given fields replaced by the non-null parameter values.
@@ -133,11 +140,14 @@ class __$$DayWeatherDataDtoImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$DayWeatherDataDtoImpl extends _DayWeatherDataDto {
   const _$DayWeatherDataDtoImpl(
       {required this.date, required this.image, required this.celc})
       : super._();
+
+  factory _$DayWeatherDataDtoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DayWeatherDataDtoImplFromJson(json);
 
   @override
   final String date;
@@ -161,6 +171,7 @@ class _$DayWeatherDataDtoImpl extends _DayWeatherDataDto {
             (identical(other.celc, celc) || other.celc == celc));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, date, image, celc);
 
@@ -172,6 +183,13 @@ class _$DayWeatherDataDtoImpl extends _DayWeatherDataDto {
   _$$DayWeatherDataDtoImplCopyWith<_$DayWeatherDataDtoImpl> get copyWith =>
       __$$DayWeatherDataDtoImplCopyWithImpl<_$DayWeatherDataDtoImpl>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DayWeatherDataDtoImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _DayWeatherDataDto extends DayWeatherDataDto {
@@ -180,6 +198,9 @@ abstract class _DayWeatherDataDto extends DayWeatherDataDto {
       required final String image,
       required final WeatherCelcDto celc}) = _$DayWeatherDataDtoImpl;
   const _DayWeatherDataDto._() : super._();
+
+  factory _DayWeatherDataDto.fromJson(Map<String, dynamic> json) =
+      _$DayWeatherDataDtoImpl.fromJson;
 
   @override
   String get date;
