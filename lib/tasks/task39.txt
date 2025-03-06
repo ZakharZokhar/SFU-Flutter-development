@@ -1,0 +1,3 @@
+См. auth_bloc, auth_page и weather_page
+
+или вебинар за 06.03.2025

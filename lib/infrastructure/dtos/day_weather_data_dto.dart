@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:test_project/database.dart';
 import 'package:test_project/domain/models/day_weather_data.dart';
 import 'package:test_project/infrastructure/dtos/weather_celc_dto.dart';
 
@@ -31,6 +33,6 @@ class DayWeatherDataDto with _$DayWeatherDataDto {
     );
   }
 
-  factory DayWeatherDataDto.fromJson(Map<String, Object?> json) =>
-      _$DayWeatherDataDtoFromJson(json);
+  // factory DayWeatherDataDto.fromJson(Map<String, Object?> json) =>
+  //     _$DayWeatherDataDtoFromJson(json);
 }

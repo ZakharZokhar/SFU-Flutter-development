@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:test_project/domain/i_sign_in_repository.dart';
+import 'package:test_project/domain/models/user.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
@@ -36,9 +37,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(SignInState.loading(phone: state.phone, password: state.password));
 
     try {
-      await _repository.signInGoogle();
+      final user = await _repository.signInGoogle();
 
-      emit(SignInState.success());
+      emit(SignInState.success(user: user));
     } on Exception catch (e) {
       emit(
         SignInState.error(
@@ -77,9 +78,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(SignInState.loading(phone: state.phone, password: state.password));
 
     try {
-      await _repository.signIn(phone: state.phone, password: state.password);
+      final user = await _repository.signIn(phone: state.phone, password: state.password);
 
-      emit(SignInState.success());
+      emit(SignInState.success(user: user));
     } on Exception catch (e) {
       emit(
         SignInState.error(

@@ -641,7 +641,7 @@ mixin _$SignInState {
     required TResult Function(
             String phone, String password, String errorMessage)
         error,
-    required TResult Function() success,
+    required TResult Function(User user) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -650,7 +650,7 @@ mixin _$SignInState {
     TResult? Function(String phone, String password)? loading,
     TResult? Function(String phone, String password, String errorMessage)?
         error,
-    TResult? Function()? success,
+    TResult? Function(User user)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -658,7 +658,7 @@ mixin _$SignInState {
     TResult Function(String phone, String password)? form,
     TResult Function(String phone, String password)? loading,
     TResult Function(String phone, String password, String errorMessage)? error,
-    TResult Function()? success,
+    TResult Function(User user)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -791,7 +791,7 @@ class _$FormImpl extends _Form {
     required TResult Function(
             String phone, String password, String errorMessage)
         error,
-    required TResult Function() success,
+    required TResult Function(User user) success,
   }) {
     return form(phone, password);
   }
@@ -803,7 +803,7 @@ class _$FormImpl extends _Form {
     TResult? Function(String phone, String password)? loading,
     TResult? Function(String phone, String password, String errorMessage)?
         error,
-    TResult? Function()? success,
+    TResult? Function(User user)? success,
   }) {
     return form?.call(phone, password);
   }
@@ -814,7 +814,7 @@ class _$FormImpl extends _Form {
     TResult Function(String phone, String password)? form,
     TResult Function(String phone, String password)? loading,
     TResult Function(String phone, String password, String errorMessage)? error,
-    TResult Function()? success,
+    TResult Function(User user)? success,
     required TResult orElse(),
   }) {
     if (form != null) {
@@ -960,7 +960,7 @@ class _$LoadingImpl extends _Loading {
     required TResult Function(
             String phone, String password, String errorMessage)
         error,
-    required TResult Function() success,
+    required TResult Function(User user) success,
   }) {
     return loading(phone, password);
   }
@@ -972,7 +972,7 @@ class _$LoadingImpl extends _Loading {
     TResult? Function(String phone, String password)? loading,
     TResult? Function(String phone, String password, String errorMessage)?
         error,
-    TResult? Function()? success,
+    TResult? Function(User user)? success,
   }) {
     return loading?.call(phone, password);
   }
@@ -983,7 +983,7 @@ class _$LoadingImpl extends _Loading {
     TResult Function(String phone, String password)? form,
     TResult Function(String phone, String password)? loading,
     TResult Function(String phone, String password, String errorMessage)? error,
-    TResult Function()? success,
+    TResult Function(User user)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -1139,7 +1139,7 @@ class _$ErrorImpl extends _Error {
     required TResult Function(
             String phone, String password, String errorMessage)
         error,
-    required TResult Function() success,
+    required TResult Function(User user) success,
   }) {
     return error(phone, password, errorMessage);
   }
@@ -1151,7 +1151,7 @@ class _$ErrorImpl extends _Error {
     TResult? Function(String phone, String password)? loading,
     TResult? Function(String phone, String password, String errorMessage)?
         error,
-    TResult? Function()? success,
+    TResult? Function(User user)? success,
   }) {
     return error?.call(phone, password, errorMessage);
   }
@@ -1162,7 +1162,7 @@ class _$ErrorImpl extends _Error {
     TResult Function(String phone, String password)? form,
     TResult Function(String phone, String password)? loading,
     TResult Function(String phone, String password, String errorMessage)? error,
-    TResult Function()? success,
+    TResult Function(User user)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1232,6 +1232,10 @@ abstract class _$$SuccessImplCopyWith<$Res> {
   factory _$$SuccessImplCopyWith(
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({User user});
+
+  $UserCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -1244,26 +1248,61 @@ class __$$SuccessImplCopyWithImpl<$Res>
 
   /// Create a copy of SignInState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = null,
+  }) {
+    return _then(_$SuccessImpl(
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User,
+    ));
+  }
+
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserCopyWith<$Res> get user {
+    return $UserCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$SuccessImpl extends _Success {
-  const _$SuccessImpl() : super._();
+  const _$SuccessImpl({required this.user}) : super._();
+
+  @override
+  final User user;
 
   @override
   String toString() {
-    return 'SignInState.success()';
+    return 'SignInState.success(user: $user)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SuccessImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$SuccessImpl &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, user);
+
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
+      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1273,9 +1312,9 @@ class _$SuccessImpl extends _Success {
     required TResult Function(
             String phone, String password, String errorMessage)
         error,
-    required TResult Function() success,
+    required TResult Function(User user) success,
   }) {
-    return success();
+    return success(user);
   }
 
   @override
@@ -1285,9 +1324,9 @@ class _$SuccessImpl extends _Success {
     TResult? Function(String phone, String password)? loading,
     TResult? Function(String phone, String password, String errorMessage)?
         error,
-    TResult? Function()? success,
+    TResult? Function(User user)? success,
   }) {
-    return success?.call();
+    return success?.call(user);
   }
 
   @override
@@ -1296,11 +1335,11 @@ class _$SuccessImpl extends _Success {
     TResult Function(String phone, String password)? form,
     TResult Function(String phone, String password)? loading,
     TResult Function(String phone, String password, String errorMessage)? error,
-    TResult Function()? success,
+    TResult Function(User user)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success();
+      return success(user);
     }
     return orElse();
   }
@@ -1344,6 +1383,14 @@ class _$SuccessImpl extends _Success {
 }
 
 abstract class _Success extends SignInState {
-  const factory _Success() = _$SuccessImpl;
+  const factory _Success({required final User user}) = _$SuccessImpl;
   const _Success._() : super._();
+
+  User get user;
+
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
