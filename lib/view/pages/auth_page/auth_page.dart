@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_project/bloc/blocs/auth_bloc/auth_bloc.dart';
 import 'package:test_project/bloc/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:test_project/router.gr.dart';
 import 'package:test_project/view/common/colors.dart';
@@ -17,11 +18,6 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  // int _selectedIndex = 0;
-  // final _usernameController = TextEditingController();
-  // final _passwordController = TextEditingController();
-  // final _phoneController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -29,9 +25,12 @@ class _AuthPageState extends State<AuthPage> {
       child: BlocConsumer<SignInBloc, SignInState>(
         listener: (context, state) {
           state.mapOrNull(
-            success: (_) => context.router.replace(
-              WeatherRoute(),
-            ),
+            success: (state) {
+              context.read<AuthBloc>().add(AuthEvent.logIn(user: state.user));
+              context.router.replace(
+                WeatherRoute(),
+              );
+            },
             error: (value) => ScaffoldMessenger.of(context)
               ..clearSnackBars()
               ..showSnackBar(
@@ -63,25 +62,6 @@ class _AuthPageState extends State<AuthPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // ChoiceChip(
-                          //   label: Text(
-                          //     'Username',
-                          //     style: body.copyWith(
-                          //       color: primaryText,
-                          //     ),
-                          //   ),
-                          //   selectedColor: primary,
-                          //   selected: _selectedIndex == 0,
-                          //   onSelected: (_) {
-                          //     FocusScope.of(context).unfocus();
-                          //     setState(() {
-                          //       _selectedIndex = 0;
-                          //     });
-                          //   },
-                          // ),
-                          // SizedBox(
-                          //   width: 10,
-                          // ),
                           ChoiceChip(
                             label: Text(
                               'Phone',
@@ -94,26 +74,7 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                         ],
                       ),
-                      // if (_selectedIndex == 0)
-                      //   TextField(
-                      //     controller: _usernameController,
-                      //     cursorColor: primary,
-                      //     decoration: InputDecoration(
-                      //       labelText: 'Username',
-                      //       focusedBorder: UnderlineInputBorder(
-                      //         borderSide: BorderSide(
-                      //           color: primary,
-                      //         ),
-                      //       ),
-                      //       labelStyle: body.copyWith(
-                      //         color: primaryText,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // if (_selectedIndex == 1)
                       TextField(
-                        // controller: _phoneController,
-
                         onChanged: (value) => context.read<SignInBloc>().add(
                               SignInEvent.phoneChanged(
                                 newPhone: value,
@@ -139,7 +100,6 @@ class _AuthPageState extends State<AuthPage> {
                         height: 10,
                       ),
                       TextField(
-                        // controller: _passwordController,
                         onChanged: (value) => context.read<SignInBloc>().add(
                               SignInEvent.passwordChanged(
                                 newPassword: value,
@@ -212,48 +172,6 @@ class _AuthPageState extends State<AuthPage> {
       ),
     );
   }
-
-  // void _login() {
-  // if (_selectedIndex == 0) {
-  //   if (_usernameController.text == 'user' && _passwordController.text == '123456') {
-  //     context.router.replace(
-  //       WeatherRoute(),
-  //     );
-  //   } else {
-  //     ScaffoldMessenger.of(context)
-  //       ..clearSnackBars()
-  //       ..showSnackBar(
-  //         SnackBar(
-  //           content: Text(
-  //             'Данные для входа не верны',
-  //             style: body.copyWith(
-  //               color: white,
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //   }
-  // } else {
-  // if (_phoneController.text == '79999999999' && _passwordController.text == '123456') {
-  // context.router.replace(
-  //   WeatherRoute(),
-  // );
-  // } else {
-  //   ScaffoldMessenger.of(context)
-  //     ..clearSnackBars()
-  //     ..showSnackBar(
-  //       SnackBar(
-  //         content: Text(
-  //           'Данные для входа не верны',
-  //           style: body.copyWith(
-  //             color: white,
-  //           ),
-  //         ),
-  //       ),
-  //     );
-  // }
-  // }
-  // }
 
   void _showBottomSheet() {
     showModalBottomSheet(

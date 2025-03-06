@@ -1,7 +1,9 @@
+import 'package:test_project/domain/models/user.dart';
+
 abstract class ISignInRepository {
-  Future<void> signIn({
+  Future<User> signIn({
     required String phone,
     required String password,
   });
-  Future<void> signInGoogle();
+  Future<User> signInGoogle();
 }

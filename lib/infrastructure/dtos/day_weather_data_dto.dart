@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:test_project/database.dart';
 import 'package:test_project/domain/models/day_weather_data.dart';
 import 'package:test_project/infrastructure/dtos/weather_celc_dto.dart';
 
@@ -17,6 +19,11 @@ class DayWeatherDataDto with _$DayWeatherDataDto {
 
   DayWeatherData toDomain() =>
       DayWeatherData(date: date, image: image, celc: '${celc.lowCelc}/${celc.upperCelc}');
+
+  DayItemsCompanion toCompanion() => DayItemsCompanion(
+      date: drift.Value(date),
+      image: drift.Value(image),
+      celc: drift.Value('${celc.lowCelc}/${celc.upperCelc}'));
 
   factory DayWeatherDataDto.fromDomain(DayWeatherData object) {
     final ceclList = object.celc.split('/');

@@ -6,11 +6,15 @@ class MyAppBar extends StatelessWidget {
   const MyAppBar({
     super.key,
     required this.text,
+    this.onLogOut,
+    this.name,
     this.needMenu = false,
   });
 
   final String text;
   final bool needMenu;
+  final String? name;
+  final VoidCallback? onLogOut;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +28,32 @@ class MyAppBar extends StatelessWidget {
               color: primaryText,
             )
           : null,
-      title: Text(
-        text,
-        style: h1.copyWith(
-          color: primaryText,
-        ),
+      title: Row(
+        children: [
+          Text(
+            text,
+            style: h1.copyWith(
+              color: primaryText,
+            ),
+          ),
+          Spacer(),
+          if (name != null)
+            Text(
+              name ?? '',
+              style: caption.copyWith(
+                color: primaryText,
+              ),
+            )
+        ],
       ),
+      actions: [
+        GestureDetector(
+          onTap: onLogOut,
+          child: Icon(
+            Icons.logout,
+          ),
+        )
+      ],
     );
   }
 }

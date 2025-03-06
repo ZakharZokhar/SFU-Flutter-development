@@ -17,7 +17,9 @@ class SignInState with _$SignInState {
     required String password,
     required String errorMessage,
   }) = _Error;
-  const factory SignInState.success() = _Success;
+  const factory SignInState.success({
+    required User user,
+  }) = _Success;
 
   String get phone => map(
         form: (value) => value.phone,
