@@ -9,12 +9,14 @@ class MyAppBar extends StatelessWidget {
     this.onLogOut,
     this.name,
     this.needMenu = false,
+    this.onMenuTap,
   });
 
   final String text;
   final bool needMenu;
   final String? name;
   final VoidCallback? onLogOut;
+  final VoidCallback? onMenuTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,13 @@ class MyAppBar extends StatelessWidget {
       backgroundColor: transparent,
       scrolledUnderElevation: 0.0,
       leading: needMenu
-          ? Icon(
-              Icons.menu,
-              size: 24,
-              color: primaryText,
+          ? GestureDetector(
+              onTap: onMenuTap,
+              child: Icon(
+                Icons.menu,
+                size: 24,
+                color: primaryText,
+              ),
             )
           : null,
       title: Row(

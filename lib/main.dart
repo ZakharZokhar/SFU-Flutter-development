@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_project/bloc/blocs/auth_bloc/auth_bloc.dart';
+import 'package:test_project/bloc/blocs/location_bloc/location_bloc.dart';
 import 'package:test_project/view/injection.dart';
 import 'package:test_project/router.dart';
 
@@ -16,8 +17,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) => getIt<AuthBloc>(),
+        ),
+      ],
       child: MaterialApp.router(
         title: 'Flutter Demo',
         theme: ThemeData(

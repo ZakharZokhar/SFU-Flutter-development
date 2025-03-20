@@ -10,5 +10,6 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         AutoRoute(page: AuthRoute.page),
         AutoRoute(page: WeatherRoute.page, path: '/'),
+        AutoRoute(page: ProfileRoute.page, path: '/profile')
       ];
 }

@@ -52,6 +52,11 @@ dependencies:
   drift_flutter: ^0.2.4
   shared_preferences: 2.5.2
   sqlite3_flutter_libs: 0.5.31
+  geolocator: ^13.0.2
+  image_picker: ^1.1.2
+  permission_handler: ^11.4.0
+  app_settings: ^5.2.0
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:

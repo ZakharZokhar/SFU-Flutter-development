@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:test_project/bloc/blocs/auth_bloc/auth_bloc.dart';
+import 'package:test_project/bloc/blocs/location_bloc/location_bloc.dart';
 import 'package:test_project/bloc/blocs/weather_bloc/weather_bloc.dart';
 import 'package:test_project/router.gr.dart';
 import 'package:test_project/view/common/colors.dart';
@@ -21,329 +22,339 @@ class WeatherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            primary,
-            white,
-            white,
-          ],
-          stops: [
-            0.0,
-            0.5,
-            1.0,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+    return BlocProvider(
+      create: (context) => getIt<LocationBloc>()..add(LocationEvent.check()),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              primary,
+              white,
+              white,
+            ],
+            stops: [
+              0.0,
+              0.5,
+              1.0,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-      ),
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: transparent,
-            appBar: PreferredSize(
-              preferredSize: Size(double.infinity, 40),
-              child: MyAppBar(
-                text: 'Красноярск',
-                needMenu: true,
-                name: state.mapOrNull(
-                  auth: (value) => value.user.name,
-                ),
-                onLogOut: () {
-                  context.read<AuthBloc>().add(
-                        AuthEvent.logOut(),
-                      );
+        child: BlocBuilder<LocationBloc, LocationState>(
+          builder: (context, locationState) {
+            return BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                return Scaffold(
+                  backgroundColor: transparent,
+                  appBar: PreferredSize(
+                    preferredSize: Size(double.infinity, 40),
+                    child: MyAppBar(
+                      text: locationState.map(initial: (_) => "Загрузка", checked: (e) => e.city),
+                      needMenu: true,
+                      name: state.mapOrNull(
+                        auth: (value) => value.user.name,
+                      ),
+                      onLogOut: () {
+                        context.read<AuthBloc>().add(
+                              AuthEvent.logOut(),
+                            );
 
-                  context.router.replace(AuthRoute());
-                },
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 359,
-                    child: Image.asset(
-                      'images/back.png',
+                        context.router.replace(AuthRoute());
+                      },
+                      onMenuTap: () => context.router.push(
+                        ProfileRoute(),
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                  body: SingleChildScrollView(
+                    child: Stack(
                       children: [
-                        SizedBox(
-                          height: 68,
-                        ),
-                        Image.asset(
-                          'images/cloud.png',
-                        ),
-                        Text(
-                          '-6°',
-                          style: number.copyWith(
-                            color: primaryText,
-                          ),
-                          strutStyle: StrutStyle(
-                            forceStrutHeight: true,
-                            height: 5.5,
-                          ),
-                          textHeightBehavior: TextHeightBehavior(
-                            applyHeightToFirstAscent: false,
-                            applyHeightToLastDescent: false,
-                          ),
-                        ),
-                        Container(
-                          height: 38,
-                          width: 248,
-                          decoration: BoxDecoration(
-                            color: primary.withOpacity(0.35),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Преимущественно облачно',
-                            style: body.copyWith(
-                              color: primaryText,
-                            ),
+                        Positioned(
+                          top: 359,
+                          child: Image.asset(
+                            'images/back.png',
                           ),
                         ),
                         SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          'Ощущается как -8°',
-                          style: body.copyWith(
-                            color: secondaryText,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 91,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ),
-                          child: Container(
-                            height: 133,
-                            decoration: cardDecoration,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 16,
-                            ),
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) => CurrentWeatherCard(
-                                time: 'Сейчас',
-                                image: 'images/example.png',
-                                cecl: '-6°',
-                              ),
-                              separatorBuilder: (context, index) => SizedBox(
-                                width: 20,
-                              ),
-                              itemCount: 100,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 16,
-                            ),
-                            PropertyCard(
-                              icon: Icons.sunny,
-                              text: 'УФ-индекс',
-                              bodyText: '0\nНизкий',
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            PropertyCard(
-                              icon: Icons.water_drop,
-                              text: 'Влажность',
-                              bodyText: '58%',
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            PropertyCard(
-                              icon: Icons.vertical_align_center,
-                              text: 'Давление',
-                              bodyText: '776\nмм рт. ст.',
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ),
-                          child: Container(
-                            height: 106,
-                            decoration: cardDecoration,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 12,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    IconWithText(
-                                      icon: Icons.air,
-                                      text: 'Ветер',
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                          text: '2 м/с',
-                                          style: h2.copyWith(
-                                            color: primaryText,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: ' ветер',
-                                              style: body.copyWith(
-                                                color: primaryText,
-                                              ),
-                                            ),
-                                          ]),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: '5 м/с',
-                                        style: h2.copyWith(
-                                          color: primaryText,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: ' порывы ветра',
-                                            style: body.copyWith(
-                                              color: primaryText,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Юго-Западный',
-                                      style: body.copyWith(
-                                        color: primaryText,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Icon(
-                                      Icons.explore_outlined,
-                                      color: secondaryText,
-                                      size: 40,
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          color: primary.withValues(alpha: 0.35),
+                          width: double.infinity,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              SizedBox(
+                                height: 68,
+                              ),
+                              Image.asset(
+                                'images/cloud.png',
+                              ),
+                              Text(
+                                '-6°',
+                                style: number.copyWith(
+                                  color: primaryText,
+                                ),
+                                strutStyle: StrutStyle(
+                                  forceStrutHeight: true,
+                                  height: 5.5,
+                                ),
+                                textHeightBehavior: TextHeightBehavior(
+                                  applyHeightToFirstAscent: false,
+                                  applyHeightToLastDescent: false,
+                                ),
+                              ),
+                              Container(
+                                height: 38,
+                                width: 248,
+                                decoration: BoxDecoration(
+                                  color: primary.withOpacity(0.35),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Преимущественно облачно',
+                                  style: body.copyWith(
+                                    color: primaryText,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                'Ощущается как -8°',
+                                style: body.copyWith(
+                                  color: secondaryText,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 91,
+                              ),
                               Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
                                 ),
-                                child: BlocProvider(
-                                  create: (context) =>
-                                      getIt.get<WeatherBloc>()..add(WeatherEvent.load()),
-                                  child: BlocBuilder<WeatherBloc, WeatherState>(
-                                    builder: (context, state) {
-                                      return state.map(
-                                        loading: (_) => Shimmer.fromColors(
-                                          baseColor: primary,
-                                          highlightColor: white,
-                                          child: Container(
-                                            decoration: cardDecoration,
-                                            height: 400,
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 16,
-                                              horizontal: 12,
-                                            ),
-                                          ),
-                                        ),
-                                        success: (value) => Container(
-                                          decoration: cardDecoration,
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 16,
-                                            horizontal: 12,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              IconWithText(
-                                                icon: Icons.calendar_month,
-                                                text: 'Прогноз на 10 дней',
-                                              ),
-                                              ...value.data.map(
-                                                (day) => DayWeather(
-                                                  date: day.date,
-                                                  image: day.image,
-                                                  celc: day.celc,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        error: (value) => Container(
-                                          decoration: cardDecoration,
-                                          height: 400,
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 16,
-                                            horizontal: 12,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                value.errorMessage,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () => context.read<WeatherBloc>().add(
-                                                      WeatherEvent.retry(),
-                                                    ),
-                                                child: Text(
-                                                  'Поробовать снова',
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                child: Container(
+                                  height: 133,
+                                  decoration: cardDecoration,
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 20,
+                                    horizontal: 16,
+                                  ),
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) => CurrentWeatherCard(
+                                      time: 'Сейчас',
+                                      image: 'images/example.png',
+                                      cecl: '-6°',
+                                    ),
+                                    separatorBuilder: (context, index) => SizedBox(
+                                      width: 20,
+                                    ),
+                                    itemCount: 100,
                                   ),
                                 ),
                               ),
                               SizedBox(
                                 height: 16,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  PropertyCard(
+                                    icon: Icons.sunny,
+                                    text: 'УФ-индекс',
+                                    bodyText: '0\nНизкий',
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  PropertyCard(
+                                    icon: Icons.water_drop,
+                                    text: 'Влажность',
+                                    bodyText: '58%',
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  PropertyCard(
+                                    icon: Icons.vertical_align_center,
+                                    text: 'Давление',
+                                    bodyText: '776\nмм рт. ст.',
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Container(
+                                  height: 106,
+                                  decoration: cardDecoration,
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 16,
+                                    horizontal: 12,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          IconWithText(
+                                            icon: Icons.air,
+                                            text: 'Ветер',
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                                text: '2 м/с',
+                                                style: h2.copyWith(
+                                                  color: primaryText,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: ' ветер',
+                                                    style: body.copyWith(
+                                                      color: primaryText,
+                                                    ),
+                                                  ),
+                                                ]),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              text: '5 м/с',
+                                              style: h2.copyWith(
+                                                color: primaryText,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: ' порывы ветра',
+                                                  style: body.copyWith(
+                                                    color: primaryText,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            'Юго-Западный',
+                                            style: body.copyWith(
+                                              color: primaryText,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Icon(
+                                            Icons.explore_outlined,
+                                            color: secondaryText,
+                                            size: 40,
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                color: primary.withValues(alpha: 0.35),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ),
+                                      child: BlocProvider(
+                                        create: (context) =>
+                                            getIt.get<WeatherBloc>()..add(WeatherEvent.load()),
+                                        child: BlocBuilder<WeatherBloc, WeatherState>(
+                                          builder: (context, state) {
+                                            return state.map(
+                                              loading: (_) => Shimmer.fromColors(
+                                                baseColor: primary,
+                                                highlightColor: white,
+                                                child: Container(
+                                                  decoration: cardDecoration,
+                                                  height: 400,
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 16,
+                                                    horizontal: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                              success: (value) => Container(
+                                                decoration: cardDecoration,
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: 16,
+                                                  horizontal: 12,
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    IconWithText(
+                                                      icon: Icons.calendar_month,
+                                                      text: 'Прогноз на 10 дней',
+                                                    ),
+                                                    ...value.data.map(
+                                                      (day) => DayWeather(
+                                                        date: day.date,
+                                                        image: day.image,
+                                                        celc: day.celc,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              error: (value) => Container(
+                                                decoration: cardDecoration,
+                                                height: 400,
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: 16,
+                                                  horizontal: 12,
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      value.errorMessage,
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () => context.read<WeatherBloc>().add(
+                                                            WeatherEvent.retry(),
+                                                          ),
+                                                      child: Text(
+                                                        'Поробовать снова',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -351,11 +362,11 @@ class WeatherPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
