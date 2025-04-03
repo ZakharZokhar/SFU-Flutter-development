@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_project/view/common/colors.dart';
 import 'package:test_project/view/common/styles.dart';
+import 'package:test_project/view/common/widgets/battery_icon.dart';
 
 class MyAppBar extends StatelessWidget {
   const MyAppBar({
@@ -52,6 +53,10 @@ class MyAppBar extends StatelessWidget {
         ],
       ),
       actions: [
+        BatteryIcon(),
+        SizedBox(
+          width: 24,
+        ),
         GestureDetector(
           onTap: onLogOut,
           child: Icon(
